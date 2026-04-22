@@ -524,7 +524,8 @@ def tela_principal():
         with col_at:
             st.markdown(f'<div style="font-size:12px;color:#6b7280;margin-top:4px">{atend}</div>', unsafe_allow_html=True)
         with col_obs:
-            st.markdown(f'<div style="font-size:12px;color:#6b7280;margin-top:4px" title="{row[\"_notes\"]}">{notes}</div>', unsafe_allow_html=True)
+            notes_full = str(row["_notes"] or "")
+            st.markdown(f'<div style="font-size:12px;color:#6b7280;margin-top:4px" title="{notes_full}">{notes}</div>', unsafe_allow_html=True)
         with col_act:
             if role != "gestor":
                 if st.button("✏", key=f"edit_{row['id']}"):
