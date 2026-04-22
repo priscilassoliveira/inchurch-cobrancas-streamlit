@@ -24,66 +24,94 @@ LOGO_SRC = f"data:image/jpeg;base64,{LOGO_B64}" if LOGO_B64 else ""
 st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
-  html, body, [class*="css"] { font-family: 'DM Sans', sans-serif !important; }
 
-  /* Esconde elementos padrão do Streamlit */
+  /* ── FORÇA TEMA ESCURO ── */
+  html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"],
+  .main, .block-container, section[data-testid="stSidebar"],
+  [data-testid="stHeader"], [data-testid="stToolbar"] {
+    background-color: #0f1117 !important;
+    color: #e8eaf0 !important;
+  }
+  [data-testid="stSidebar"] { background-color: #181c26 !important; }
+  [data-testid="stForm"], .stTextInput input, .stSelectbox select,
+  .stTextArea textarea, .stDateInput input {
+    background-color: #1e2333 !important;
+    color: #e8eaf0 !important;
+    border-color: #2a2f42 !important;
+  }
+  .stTextInput input:focus, .stSelectbox select:focus,
+  .stTextArea textarea:focus { border-color: #7cc243 !important; }
+  label, .stMarkdown, p, span, div { color: #e8eaf0 !important; }
+  .stExpander { background-color: #181c26 !important; border-color: #2a2f42 !important; }
+  [data-testid="stExpander"] { background-color: #181c26 !important; }
+  hr { border-color: #2a2f42 !important; }
+
+  html, body, [class*="css"] { font-family: 'DM Sans', sans-serif !important; }
   #MainMenu, footer, header { visibility: hidden; }
   .block-container { padding-top: 1rem !important; padding-bottom: 1rem !important; }
 
   /* Cards de métricas */
   .metric-card {
-    background: #181c26; border: 1px solid #2a2f42; border-radius: 10px;
+    background: #181c26 !important; border: 1px solid #2a2f42; border-radius: 10px;
     padding: 16px 18px; text-align: center;
   }
-  .metric-label { font-size: 11px; text-transform: uppercase; letter-spacing: .8px; color: #6b7280; margin-bottom: 6px; }
-  .metric-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700; }
-  .metric-sub   { font-size: 11px; color: #6b7280; margin-top: 4px; }
+  .metric-label { font-size: 11px !important; text-transform: uppercase; letter-spacing: .8px; color: #6b7280 !important; margin-bottom: 6px; }
+  .metric-value { font-family: 'Syne', sans-serif !important; font-size: 28px !important; font-weight: 700 !important; }
 
-  /* Badges de status */
-  .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
-  .badge-pending    { background:rgba(239,68,68,.15);  color:#ef4444; }
-  .badge-contacted  { background:rgba(245,158,11,.15); color:#f59e0b; }
-  .badge-promise    { background:rgba(249,115,22,.15); color:#f97316; }
-  .badge-negotiating{ background:rgba(79,124,255,.15); color:#4f7cff; }
-  .badge-paid       { background:rgba(34,197,94,.15);  color:#22c55e; }
+  /* Badges */
+  .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px !important; font-weight:600; }
+  .badge-pending    { background:rgba(239,68,68,.15);  color:#ef4444 !important; }
+  .badge-contacted  { background:rgba(245,158,11,.15); color:#f59e0b !important; }
+  .badge-promise    { background:rgba(249,115,22,.15); color:#f97316 !important; }
+  .badge-negotiating{ background:rgba(79,124,255,.15); color:#4f7cff !important; }
+  .badge-paid       { background:rgba(34,197,94,.15);  color:#22c55e !important; }
 
   /* Pendências */
   .pend-card {
-    background:#181c26; border:1px solid #2a2f42; border-radius:10px;
+    background:#181c26 !important; border:1px solid #2a2f42; border-radius:10px;
     padding:12px 16px; margin-bottom:8px;
   }
-  .pend-promise  { border-left:3px solid #f97316; }
-  .pend-retorno  { border-left:3px solid #4f7cff; }
-  .pend-semcont  { border-left:3px solid #f59e0b; }
+  .pend-promise  { border-left:3px solid #f97316 !important; }
+  .pend-retorno  { border-left:3px solid #4f7cff !important; }
+  .pend-semcont  { border-left:3px solid #f59e0b !important; }
 
   /* TOP badge */
-  .top-badge { background:rgba(239,68,68,.2); color:#ff6b6b; font-size:10px; padding:2px 7px; border-radius:10px; font-weight:700; }
+  .top-badge { background:rgba(239,68,68,.2); color:#ff6b6b !important; font-size:10px; padding:2px 7px; border-radius:10px; font-weight:700; }
 
-  /* Linha TOP */
-  .top-row { border-left:3px solid rgba(239,68,68,.5) !important; background:rgba(239,68,68,.04) !important; }
+  /* Dias badges */
+  .dias-hoje { background:rgba(34,197,94,.15); color:#22c55e !important; padding:2px 8px; border-radius:10px; font-size:11px !important; font-weight:600; }
+  .dias-30   { background:rgba(245,158,11,.15); color:#f59e0b !important; padding:2px 8px; border-radius:10px; font-size:11px !important; font-weight:600; }
+  .dias-60   { background:rgba(249,115,22,.15); color:#f97316 !important; padding:2px 8px; border-radius:10px; font-size:11px !important; font-weight:600; }
+  .dias-90   { background:rgba(239,68,68,.15);  color:#ef4444 !important; padding:2px 8px; border-radius:10px; font-size:11px !important; font-weight:600; }
+  .dias-mais { background:rgba(139,0,0,.2); color:#ff6b6b !important; padding:2px 8px; border-radius:10px; font-size:11px !important; font-weight:600; }
 
-  /* Login */
-  .login-container { max-width:400px; margin:80px auto; }
+  /* Row separador */
+  .row-sep { border-bottom: 1px solid #2a2f42; margin: 4px 0; }
+  .row-nome { font-weight:600; font-size:13px !important; }
+  .row-sub  { font-size:11px !important; color:#6b7280 !important; }
+  .row-val  { font-weight:700; font-size:13px !important; }
+  .row-muted{ font-size:12px !important; color:#6b7280 !important; }
 
-  /* Header */
-  .app-header {
-    background:#181c26; border-bottom:1px solid #2a2f42; padding:12px 24px;
-    display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;
-    border-radius:10px;
-  }
-
-  /* Dias badge */
-  .dias-hoje { background:rgba(34,197,94,.15); color:#22c55e; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
-  .dias-30   { background:rgba(245,158,11,.15); color:#f59e0b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
-  .dias-60   { background:rgba(249,115,22,.15); color:#f97316; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
-  .dias-90   { background:rgba(239,68,68,.15);  color:#ef4444; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
-  .dias-mais { background:rgba(139,0,0,.2); color:#ff6b6b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
-
+  /* Botões */
   .stButton > button {
     background: #7cc243 !important; color: #1a1a1a !important;
     font-weight: 700 !important; border: none !important; border-radius: 8px !important;
   }
   .stButton > button:hover { opacity: .88 !important; }
+
+  /* Tabela header */
+  .tabela-header {
+    display:grid; grid-template-columns:2.5fr 1.5fr 0.8fr 1.2fr 0.8fr 1.2fr 1.5fr 1.2fr 1.2fr 1.5fr 0.6fr;
+    background:#1e2333; border-radius:8px 8px 0 0; padding:10px 8px;
+    border:1px solid #2a2f42; margin-bottom:2px;
+  }
+  .tabela-header span { font-size:10px !important; text-transform:uppercase; letter-spacing:.7px; color:#6b7280 !important; font-weight:500; }
+  .tabela-row {
+    display:grid; grid-template-columns:2.5fr 1.5fr 0.8fr 1.2fr 0.8fr 1.2fr 1.5fr 1.2fr 1.2fr 1.5fr 0.6fr;
+    padding:10px 8px; border-bottom:1px solid #2a2f42; align-items:center;
+    transition:background .15s;
+  }
+  .tabela-row:hover { background:rgba(255,255,255,.02); }
 </style>
 """, unsafe_allow_html=True)
 
@@ -428,7 +456,7 @@ def tela_principal():
                       <span style="font-size:12px;color:#6b7280">{valor_fmt}</span>
                     </div>""", unsafe_allow_html=True)
                     if role != "gestor":
-                        if st.button("✏ Atender", key=f"pend_{c['id']}"):
+                        if st.button("✏ Atender", key=f"pendbtn_{i}_{c['id']}"):
                             st.session_state["editing_id"] = c["id"]
                             st.session_state["show_edit"]  = True
 
@@ -485,7 +513,7 @@ def tela_principal():
     st.markdown(f"**{len(df_cli)} clientes** encontrados")
 
     # ── Tabela ──
-    for _, row in df_cli.iterrows():
+    for row_idx, (_, row) in enumerate(df_cli.iterrows()):
         is_top = row["id"] in top10_ids
         bg = "rgba(239,68,68,.04)" if is_top else "transparent"
         border = "border-left:3px solid rgba(239,68,68,.5);" if is_top else ""
@@ -528,7 +556,7 @@ def tela_principal():
             st.markdown(f'<div style="font-size:12px;color:#6b7280;margin-top:4px" title="{notes_full}">{notes}</div>', unsafe_allow_html=True)
         with col_act:
             if role != "gestor":
-                if st.button("✏", key=f"edit_{row['id']}"):
+                if st.button("✏", key=f"edit_{row_idx}_{row['id']}"):
                     st.session_state["editing_id"] = row["id"]
                     st.session_state["show_edit"]  = True
                     st.rerun()
